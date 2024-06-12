@@ -1,6 +1,6 @@
 {
   "name": "mongoose-advanced-soft-delete",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight Mongoose Plugin for Effortless Soft Deletion",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
