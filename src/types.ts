@@ -11,24 +11,21 @@ export interface SoftDeleteDocument extends Document {
   deletedAt: Date | null;
 }
 
-export interface GenericSoftDeleteDocument<T> extends Document<T> {
-  isDeleted: boolean;
-  deletedAt: Date | null;
-}
+export type GenericSoftDeleteDocument<T> = T & SoftDeleteDocument;
 
 export interface SoftDeleteModel<T>
   extends Model<GenericSoftDeleteDocument<T>> {
-  findDeleted(): Promise<T[]>;
+  findDeleted(): Promise<GenericSoftDeleteDocument<T>[]>;
   findAllIncludingSoftDeleted(
-    query: FilterQuery<SoftDeleteDocument>,
-    projection?: ProjectionType<SoftDeleteDocument>,
-    options?: QueryOptions<SoftDeleteDocument>,
-  ): Promise<T[]>;
+    query: FilterQuery<GenericSoftDeleteDocument<T>>,
+    projection?: ProjectionType<GenericSoftDeleteDocument<T>>,
+    options?: QueryOptions<GenericSoftDeleteDocument<T>>,
+  ): Promise<GenericSoftDeleteDocument<T>[]>;
   findOneIncludingSoftDeleted: (
     query: FilterQuery<SoftDeleteDocument>,
     projection?: ProjectionType<SoftDeleteDocument>,
     options?: QueryOptions<SoftDeleteDocument>,
-  ) => Promise<T>;
+  ) => Promise<GenericSoftDeleteDocument<T> | null>;
   restore(query: object): Promise<{ restored: number }>;
   softDeleteById(
     id: string,
