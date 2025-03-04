@@ -27,6 +27,11 @@ export const softDeletePlugin = (schema: Schema): void => {
   schema.pre('countDocuments', applyNotDeletedFilter);
 
   schema.pre('aggregate', function () {
+    // check if there is an option to include soft deleted records
+    if (this.options.includeSoftDeleted === true) {
+      return;
+    }
+
     //check if pipeline has a geoNear stage at the beginning
     const pipeline = this.pipeline();
     //for some reason its not considering geoNear as a stage so had to infer type as any

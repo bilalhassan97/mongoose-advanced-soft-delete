@@ -135,6 +135,12 @@ Find one document, including soft-deleted ones.
 
 `const user = await User.findOneIncludingSoftDeleted({ email: 'user@example.com' });`
 
+#### `includeSoftDeleted Option`
+
+You can now include soft-deleted records in aggregate queries by setting `includeSoftDeleted` to true in the aggregate options, which allows fetching both deleted and non-deleted records.
+
+`const users = await User.aggregate([], { includeSoftDeleted: true });`
+
 ## License
 
 MIT
