@@ -28,7 +28,7 @@ export const softDeletePlugin = (schema: Schema): void => {
 
   schema.pre('aggregate', function () {
     // check if there is an option to include soft deleted records
-    if (this.options.includeSoftDeleted === true) {
+    if (this.options.includeSoftDeleted) {
       return;
     }
 
