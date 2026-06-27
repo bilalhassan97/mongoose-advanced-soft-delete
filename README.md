@@ -111,11 +111,13 @@ Soft delete multiple documents matching the given query.
 
 `await User.softDeleteMany({ name: 'John Doe' });`
 
-#### `restore(query: object): Promise<{ restored: number }>`
+#### `restore(query: object, options?: object): Promise<{ restored: number }>`
 
 Restore soft-deleted documents matching the given query.
 
 `await User.restore({ email: 'user@example.com' });`
+
+`await User.restore({ email: 'user@example.com' }, { session });`
 
 #### `findDeleted(): Promise<T[]>`
 
@@ -140,6 +142,25 @@ Find one document, including soft-deleted ones.
 You can now include soft-deleted records in aggregate queries by setting `includeSoftDeleted` to true in the aggregate options, which allows fetching both deleted and non-deleted records.
 
 `const users = await User.aggregate([], { includeSoftDeleted: true });`
+
+### Transactions
+
+All delete and restore methods accept an optional `options` object. Pass `{ session }` to participate in a Mongoose transaction:
+
+```
+const session = await mongoose.startSession();
+session.startTransaction();
+try {
+  await User.softDelete({ _id }, { session });
+  await User.restore({ _id }, { session });
+  await session.commitTransaction();
+} catch (err) {
+  await session.abortTransaction();
+  throw err;
+} finally {
+  session.endSession();
+}
+```
 
 ## License
 

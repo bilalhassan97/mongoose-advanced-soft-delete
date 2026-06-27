@@ -26,17 +26,20 @@ export interface SoftDeleteModel<T>
     projection?: ProjectionType<SoftDeleteDocument>,
     options?: QueryOptions<SoftDeleteDocument>,
   ) => Promise<GenericSoftDeleteDocument<T> | null>;
-  restore(query: object): Promise<{ restored: number }>;
+  restore(
+    query: FilterQuery<GenericSoftDeleteDocument<T>>,
+    options?: QueryOptions<GenericSoftDeleteDocument<T>>,
+  ): Promise<{ restored: number }>;
   softDeleteById(
     id: string,
-    options?: object,
+    options?: QueryOptions<GenericSoftDeleteDocument<T>>,
   ): Promise<{ deletedCount: number } | null>;
   softDelete(
-    query: object,
-    options?: object,
+    query: FilterQuery<GenericSoftDeleteDocument<T>>,
+    options?: QueryOptions<GenericSoftDeleteDocument<T>>,
   ): Promise<{ deletedCount: number } | null>;
   softDeleteMany(
-    query: object,
-    options?: object,
+    query: FilterQuery<GenericSoftDeleteDocument<T>>,
+    options?: QueryOptions<GenericSoftDeleteDocument<T>>,
   ): Promise<{ deletedCount: number } | null>;
 }
