@@ -100,8 +100,13 @@ export const softDeletePlugin = (schema: Schema): void => {
     async function (
       this: Model<SoftDeleteDocument>,
       query: FilterQuery<SoftDeleteDocument>,
+      options?: QueryOptions<SoftDeleteDocument>,
     ): Promise<{ restored: number }> {
-      const deletedDocuments = await this.find({ ...query, isDeleted: true });
+      const deletedDocuments = await this.find(
+        { ...query, isDeleted: true },
+        undefined,
+        options,
+      );
       if (!deletedDocuments) {
         throw new Error('Record not found');
       }
@@ -110,7 +115,7 @@ export const softDeletePlugin = (schema: Schema): void => {
         if (deletedDocument.isDeleted) {
           deletedDocument.isDeleted = false;
           deletedDocument.deletedAt = null;
-          await deletedDocument.save();
+          await deletedDocument.save(options);
           restored++;
         }
       }
@@ -125,7 +130,7 @@ export const softDeletePlugin = (schema: Schema): void => {
       id: string,
       options?: QueryOptions<SoftDeleteDocument>,
     ): Promise<{ deletedCount: number } | null> {
-      const document = await this.findById(id);
+      const document = await this.findById(id, undefined, options);
       if (!document) {
         return null;
       }
@@ -145,7 +150,7 @@ export const softDeletePlugin = (schema: Schema): void => {
       query: FilterQuery<SoftDeleteDocument>,
       options?: QueryOptions<SoftDeleteDocument>,
     ): Promise<{ deletedCount: number } | null> {
-      const documents = await this.find(query);
+      const documents = await this.find(query, undefined, options);
       if (!documents) {
         return null;
       }
@@ -169,7 +174,7 @@ export const softDeletePlugin = (schema: Schema): void => {
       query: FilterQuery<SoftDeleteDocument>,
       options?: QueryOptions<SoftDeleteDocument>,
     ): Promise<{ deletedCount: number } | null> {
-      const documents = await this.find(query);
+      const documents = await this.find(query, undefined, options);
       if (!documents) {
         return null;
       }
