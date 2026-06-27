@@ -1,5 +1,11 @@
 # mongoose-advanced-soft-delete
 
+## 1.1.5
+
+### Patch Changes
+
+- Added session support to `restore`; forward `options.session` to reads and writes in all delete/restore methods
+
 ## 1.1.4
 
 ### Patch Changes
